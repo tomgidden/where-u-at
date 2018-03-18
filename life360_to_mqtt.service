@@ -1,0 +1,17 @@
+[Unit]
+Description=GidTech Where-U-At 2000 Life360 interface
+After=network-online.target
+
+[Service]
+ExecStart=/root/where-u-at/run_life360_to_mqtt.zsh
+WorkingDirectory=/root/where-u-at
+User=root
+Group=daemon
+SyslogIdentifier=where-u-at_life360
+StandardOutput=syslog
+Restart=on-failure
+KillSignal=SIGINT
+#Nice=10
+
+[Install]
+WantedBy=multi-user.target

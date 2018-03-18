@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+
+  web:
+    image: nginx
+    volumes:
+      - /root/where-u-at/webframe:/usr/share/nginx/html:ro
+    ports:
+      - "26905:80"
