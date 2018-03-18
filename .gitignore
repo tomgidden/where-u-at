@@ -1,0 +1,8 @@
+.webcache
+junk
+__pycache__
+.#*
+._*
+*.pyo
+*.pyc
+

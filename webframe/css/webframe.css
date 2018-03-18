@@ -1,0 +1,171 @@
+html, body {
+  height: 100%;
+}
+
+heading {
+  display: block;
+}
+
+body {
+  background: black;
+  color: #ffddcc;
+  font-family: "FONT";
+}
+
+#people {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+.person {
+  position:relative;
+  height: 33%;
+  overflow: hidden;
+  padding: 20px 20px;
+  margin:0;
+  border-top: 1px solid #ffddcc;
+}
+
+.person:first-child {
+  border-top: none;
+}
+
+.person .distance {
+  font-stretch: condensed;
+  font-weight: bold;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border-left: 20px solid black;
+  font-size: 42px;
+  padding: 10px 10px 0px 10px;
+  line-height: 1;
+  background: #ffddcc;
+  color: black;
+}
+
+.person .accuracy {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px 10px 0px 10px;
+  line-height: 1;
+}
+
+.person .since {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.person .since:before {
+  content: "Updated: ";
+  font-weight: 100;
+}
+
+.person .address {
+  font-size: 42px;
+}
+
+.person.athome .address {
+  display:none;
+}
+
+.person heading {
+  font-size: 60px;
+  line-height:1;
+  font-weight: bold;
+}
+
+#map_parent {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  display: none;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+
+#calendar {
+  position:absolute;
+  right: 0;
+  width: 50%;
+  border-left: 1px solid #ffddcc;
+}
+
+.events .day {
+  position: relative;
+  margin: 20px 20px;
+  border-top: 1px solid #ffddcc;
+}
+
+.events .day:first-child {
+  margin-top: 0;
+  border-top: none;
+}
+
+.events .day heading {
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.events {
+  font-size: 24px;
+}
+
+.events .day .noevents {
+  font-style: italic;
+  text-align: center;
+}
+
+.events .event {
+  margin-top: 0.2em;
+}
+
+.events .event:first-child {
+  margin-top: 0;
+}
+
+
+.events .event .description {
+  margin-left: 3em;
+}
+
+.events .event.holiday .description {
+}
+
+
+.events .event .time {
+  overflow: visible;
+  float: left;
+  clear: both;
+  font-weight: bold;
+}
+
+.events .event .time.allday {
+  visibility:hidden;
+}
+
+
+#clock {
+  margin: 20px 20px 0;
+  display: block;
+  background: black;
+  text-align: center;
+  font-weight: 900;
+  font-size: 90px;
+  line-height: 1.2;
+}

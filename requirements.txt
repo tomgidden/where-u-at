@@ -1,0 +1,9 @@
+Pillow
+paho-mqtt
+requests
+requests_cache
+icalendar
+pytz
+requests_futures
+cachecontrol
+lockfile

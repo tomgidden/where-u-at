@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-Regular.otf) format("opentype");
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-It.otf) format("opentype");
+  font-style: italic;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-Bold.otf) format("opentype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-BoldIt.otf) format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-Light.otf) format("opentype");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-LightIt.otf) format("opentype");
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-LightCond.otf) format("opentype");
+  font-stretch: condensed;
+  font-weight: 100;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-LightCondIt.otf) format("opentype");
+  font-weight: 100;
+  font-stretch: condensed;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-Cond.otf) format("opentype");
+  font-stretch: condensed;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-CondIt.otf) format("opentype");
+  font-style: italic;
+  font-stretch: condensed;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-BoldCond.otf) format("opentype");
+  font-weight: bold;
+  font-stretch: condensed;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-BoldCondIt.otf) format("opentype");
+  font-weight: bold;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-Black.otf) format("opentype");
+  font-weight: 900;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-BlackCond.otf) format("opentype");
+  font-stretch: condensed;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-BlackIt.otf) format("opentype");
+  font-style: italic;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/MyriadPro-BlackCondIt.otf) format("opentype");
+  font-stretch: condensed;
+  font-style: italic;
+  font-weight: 900;
+}
