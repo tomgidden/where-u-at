@@ -8,9 +8,11 @@ RUN pip3 install paho-mqtt requests && \
     rm -rf /root/.cache/
 
 RUN mkdir /app
+
 WORKDIR /app
 
 COPY requirements.txt /app/
+
 RUN pip3 install -r requirements.txt && \
     rm -rf /root/.cache/
 

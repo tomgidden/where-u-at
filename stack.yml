@@ -6,17 +6,17 @@ services:
     image: tomgidden/life360_to_mqtt
     build: life360_to_mqtt
     volumes:
-      - "./life360_to_mqtt/config.py:/app/config.py"
+      - "./life360_to_mqtt/config.py:/app/config.py:ro"
 
   ical_to_mqtt:
     image: tomgidden/ical_to_mqtt
     build: ical_to_mqtt
     volumes:
-      - "./ical_to_mqtt/config.py:/app/config.py"
+      - "./ical_to_mqtt/config.py:/app/config.py:ro"
 
   web:
     image: nginx
     volumes:
-      - /root/where-u-at/webframe:/usr/share/nginx/html:ro
+      - "./webframe:/usr/share/nginx/html:ro"
     ports:
       - "26905:80"

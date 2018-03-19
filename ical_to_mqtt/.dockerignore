@@ -1,0 +1,10 @@
+downloaded
+.cache
+.webcache
+junk
+__pycache__
+.#*
+._*
+*.pyo
+*.pyc
+config.py
