@@ -1,0 +1,19 @@
+
+mqtt_host = 'mqtt.home'
+
+debug = False
+
+life360_authorization_token = "cFJFcXVnYWJSZXRyZTRFc3RldGhlcnVmcmVQdW1hbUV4dWNyRUh1YzptM2ZydXBSZXRSZXN3ZXJFQ2hBUHJFOTZxYWtFZHI0Vg=="
+life360_username = "xxx@xxx.xxx"
+life360_password = "xxxx"
+
+google_api_key = "AIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+ua = "GidLabs-Where-u-at/0.1"
+
+locations = {
+    "The Mall": { 'latitude': 51.5251277, 'longitude': -2.5972443, 'radius': 200 },
+    "Vue Cribbs Causeway": { 'latitude': 51.523171, 'longitude': -2.6059989, 'radius': 100 },
+    "Southmead Hospital": { 'latitude': 51.4950162, 'longitude': -2.5918747, 'radius': 200 },
+    "Clevedon Hospital": { 'latitude': 51.4376361, 'longitude': -2.8473435, 'radius': 200 }
+}

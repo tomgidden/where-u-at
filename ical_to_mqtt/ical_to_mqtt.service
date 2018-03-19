@@ -3,8 +3,8 @@ Description=GidTech iCalendar-To-MQTT 2000
 After=network-online.target autofs.service
 
 [Service]
-ExecStart=/root/where-u-at/run_ical_to_mqtt.zsh
-WorkingDirectory=/root/where-u-at
+ExecStart=/root/where-u-at/ical_to_mqtt/run_ical_to_mqtt.zsh
+WorkingDirectory=/root/where-u-at/ical_to_mqtt
 User=root
 Group=daemon
 SyslogIdentifier=ical_to_mqtt

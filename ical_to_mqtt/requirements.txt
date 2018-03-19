@@ -1,4 +1,3 @@
-Pillow
 paho-mqtt
 requests
 requests_cache

@@ -1,0 +1,13 @@
+mqtt_host = 'mqtt.home'
+
+localtz = 'Europe/London'
+
+debug = False
+
+refresh = 3600
+
+calendars = {
+    'tom': 'https://calendar.google.com/calendar/ical/tom@gidden.net/private-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/basic.ics',
+    'fred': 'https://calendar.google.com/calendar/ical/fred@gidden.net/private-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/basic.ics',
+    'dave': 'https://calendar.google.com/calendar/ical/dave@gidden.net/private-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/basic.ics'
+}

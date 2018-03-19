@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 
-debug = False
+from config import *
 
-mqtt_host = 'mqtt.home'
 import paho.mqtt.client as paho
 
 from calzone import Calzone
@@ -28,7 +27,11 @@ import sys
 
 import json
 
-localtz = timezone('Europe/London')
+if localtz:
+    localtz = timezone(localtz)
+else:
+    localtz = timezone('Europe/London')
+
 oneday = datetime.timedelta(hours=24)
 now = localtz.localize(datetime.datetime.now())
 midnight = localtz.localize(datetime.datetime.combine(now, datetime.time(0,0,0)))
@@ -42,10 +45,6 @@ class ForceCacheHeuristic(BaseHeuristic):
             'expires' : txt,
             'cache-control' : 'public',
         }
-
-calendars = {
-    'cal1': 'https://calendar.google.com/calendar/ical/example%40gmail.com/private-1234/basic.ics'
-}
 
 def on_disconnect(mqtt, userdata, rc):
     print("Disconnected from MQTT server with code: {}".format(rc))
@@ -107,7 +106,7 @@ try:
                 j = '['+(','.join([str(e) for e in es]))+']'
 
                 if j == oj:
-                    time.sleep(3600)
+                    time.sleep(refresh)
                 else:
                     print("Publishing...")
                     print(j)

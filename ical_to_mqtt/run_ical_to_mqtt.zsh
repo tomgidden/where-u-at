@@ -10,7 +10,7 @@ rsync --delete -a /nfs/miniprojects/where-u-at/ /root/where-u-at
 #	systemctl restart kbd
 #fi
 
-cd /root/where-u-at
+cd /root/where-u-at/ical_to_mqtt
 
 python3 ./ical_to_mqtt.py
 

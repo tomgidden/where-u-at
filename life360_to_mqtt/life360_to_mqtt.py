@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
-debug = False
+from config import *
 
-mqtt_host = 'mqtt.home'
 import paho.mqtt.client as paho
 
 import geopy.geocoders.base
-geopy.geocoders.base.DEFAULT_USER_AGENT = 'GidTech-Where-U-At/0.1'
+geopy.geocoders.base.DEFAULT_USER_AGENT = ua
 import urllib.request
-urllib.request.OpenerDirector.client_version = 'GidTech-Where-U-At/0.1'
+urllib.request.OpenerDirector.client_version = ua
 
 from life360 import life360
 import math
@@ -19,7 +18,7 @@ import datetime
 import re
 from geopy.geocoders import GoogleV3
 
-geolocator = GoogleV3(api_key="XXXX", user_agent="GidTech-Where-U-At/0.1")
+geolocator = GoogleV3(api_key=google_api_key, user_agent=ua)
 
 import json
 
@@ -38,21 +37,8 @@ mqtt.connect(mqtt_host, 1883, 60)
 mqtt.on_disconnect = on_disconnect
 mqtt.loop_start()
 
-# Life360 auth token
-authorization_token = "XXXX"
-
-# Life 360 login
-username = "xxxx@xxx.net"
-password = "xxxx"
 
 people = {}
-locations = {
-    "HOME": { 'latitude': 51.0000, 'longitude': -2.0000, 'radius': 40 },
-    "The Mall": { 'latitude': 51.5251277, 'longitude': -2.5972443, 'radius': 200 },
-    "Vue Cribbs Causeway": { 'latitude': 51.523171, 'longitude': -2.6059989, 'radius': 100 },
-    "Southmead Hospital": { 'latitude': 51.4950162, 'longitude': -2.5918747, 'radius': 200 },
-    "Clevedon Hospital": { 'latitude': 51.4376361, 'longitude': -2.8473435, 'radius': 200 }
-}
 
 def distance_between(lat, lon, hlat, hlon):
     theta = hlon - lon
@@ -63,7 +49,7 @@ def distance_between(lat, lon, hlat, hlon):
 
 
 def get_updates():
-    api = life360(authorization_token=authorization_token, username=username, password=password)
+    api = life360(authorization_token=life360_authorization_token, username=life360_username, password=life360_password)
     if api.authenticate():
         circles =  api.get_circles()
         for circle_info in circles:

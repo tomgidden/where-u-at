@@ -1,3 +1,5 @@
+downloaded
+.cache
 .webcache
 junk
 __pycache__
@@ -5,4 +7,5 @@ __pycache__
 ._*
 *.pyo
 *.pyc
+config.py
 
