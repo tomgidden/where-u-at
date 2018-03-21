@@ -1,4 +1,5 @@
 var Calendar, Clock, People;
+var weather;
 
 function mqtt_message(topic, payload, details)
 {
@@ -157,7 +158,6 @@ function calendar_resolve(payload)
     return events;
 }
 
-var weather;
 function weather_update(topic, payload, details)
 {
     payload = JSON.parse(payload);
@@ -241,7 +241,7 @@ function calendar_update(topic, payload, details)
 
     for (var d in days) {
         if (!days.hasOwnProperty(d)) continue;
-        if (d < 2) continue;
+        if (d < 5) continue;
 
         var events = days[d];
 
@@ -321,8 +321,6 @@ function location_update(topic, payload, details)
     person.data('latitude', payload.latitude);
     person.data('longitude', payload.longitude);
     person.data('label', payload.nickname.substr(0,1));
-
-
 
     if (! (since = $('.since', person) ).length )
         since = $('<div>').addClass('time since').appendTo(person);
