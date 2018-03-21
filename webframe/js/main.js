@@ -6,11 +6,16 @@ function mqtt_message(topic, payload, details)
 
     if (0 === topic.indexOf('/calendar')) {
         calendar_update(topic, payload, details);
-        clock_update();
+        weather_render();
+        times_render();
     }
     else if (0 === topic.indexOf('/location')) {
         location_update(topic, payload, details);
-        clock_update();
+        times_render();
+    }
+    else if (0 === topic.indexOf('/weather')) {
+        weather_update(topic, payload, details);
+        times_render();
     }
 }
 
@@ -53,6 +58,7 @@ function calendar_set_day(parent, date, events, title, cls)
 
     var title_el = $('<heading>').addClass('title');
 
+    day_el.prop('id', 'day_'+id);
     day_el.prop('class', 'day');
     if (cls) day_el.addClass(cls);
 
@@ -60,7 +66,7 @@ function calendar_set_day(parent, date, events, title, cls)
         title_el.text(title);
     }
     else {
-        title_el.title(date.format('dddd, D mmmm'));
+        title_el.text(date.format('dddd, D MMMM'));
     }
 
     if (events) {
@@ -113,7 +119,8 @@ function calendar_set_day(parent, date, events, title, cls)
         day_el.addClass('noevents');
     }
 
-    day_el.prepend(title_el);
+    $('<div>').addClass('weather').prependTo(day_el);
+    title_el.prependTo(day_el);
     parent.append(day_el);
 }
 
@@ -150,6 +157,56 @@ function calendar_resolve(payload)
     return events;
 }
 
+var weather;
+function weather_update(topic, payload, details)
+{
+    payload = JSON.parse(payload);
+    weather = payload['list'];
+    weather_render();
+}
+
+function weather_toggle()
+{
+    $('body').toggleClass('hideweather');
+}
+
+function weather_render()
+{
+    if (!weather) return;
+
+    var now = moment();
+
+    $('.weather').empty();
+
+    for (var i in weather) {
+        if (!weather.hasOwnProperty(i)) continue;
+        var fc = weather[i];
+
+        var dt = moment(fc['dt_txt']);
+        var id = '#day_'+dt.format('YYYYMMDD');
+        var day_el = $(id);
+        if (day_el.length <= 0) continue;
+
+        var weather_el = $('.weather', day_el);
+        var h = dt.hour();
+//        if (h < 9 || h > 21) continue;
+
+        var fc_el = $('<div>').addClass('forecast').appendTo(weather_el);
+
+        fc_el.on('click', weather_toggle);
+
+        if (dt < now) fc_el.addClass('past');
+
+        var tm = dt.format('H');
+
+        if (tm==='12') fc_el.addClass('noon');
+
+        $('<span>').addClass('at').text(dt.format('ha')).appendTo(fc_el);
+        $('<i>').addClass('wi wi-owm-'+fc['weather'][0]['id']).text(fc['weather'][0]['description']).appendTo(fc_el);
+        $('<span>').addClass('temperature').text(Math.round(fc['main']['temp']-273.15)).appendTo(fc_el);
+    }
+}
+
 function calendar_update(topic, payload, details)
 {
     payload = JSON.parse(payload);
@@ -170,6 +227,18 @@ function calendar_update(topic, payload, details)
                      'Tomorrow',
                      'tomorrow');
 
+    calendar_set_day(nparent,
+                     moment().add(2, 'days'),
+                     undefined !== days[2] ? days[2] : null);
+
+    calendar_set_day(nparent,
+                     moment().add(3, 'days'),
+                     undefined !== days[3] ? days[3] : null);
+
+    calendar_set_day(nparent,
+                     moment().add(4, 'days'),
+                     undefined !== days[4] ? days[4] : null);
+
     for (var d in days) {
         if (!days.hasOwnProperty(d)) continue;
         if (d < 2) continue;
@@ -179,7 +248,7 @@ function calendar_update(topic, payload, details)
         calendar_set_day(nparent,
                          events[0].begin,
                          events,
-                         events[0].begin.format('ddd, D MMMM'));
+                         events[0].begin.format('dddd, D MMMM'));
     }
 
     Calendar
@@ -187,7 +256,7 @@ function calendar_update(topic, payload, details)
         .append(nparent);
 }
 
-function clock_update()
+function times_render()
 {
     $('.time.since').each(function (ix, el) {
         el = $(el);
@@ -224,7 +293,7 @@ function location_update(topic, payload, details)
         nickname = $('<heading>').addClass('nickname').appendTo(person);
     nickname.text(payload.nickname);
 
-    if (! (address = $('.location', person) ).length )
+    if (! (address = $('.address', person) ).length )
         address = $('<div>').addClass('address').appendTo(person);
 
     if (payload.address)
@@ -331,13 +400,16 @@ $(function () {
     Calendar = $('#calendar');
     People = $('#people');
 
-    clock_update();
-    setInterval(clock_update, 10000);
+    $('body').addClass('hideweather');
+
+    times_render();
+    setInterval(times_render, 10000);
 
     var client = mqtt.connect('ws://mqtt.home:1884/');
 
     client
         .on('message', mqtt_message)
         .subscribe('/calendar/all_events')
+        .subscribe('/weather')
         .subscribe('/location/+');
 });

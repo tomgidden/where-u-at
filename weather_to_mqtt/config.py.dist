@@ -1,0 +1,16 @@
+
+mqtt_host = 'mqtt.home'
+
+localtz = 'Europe/London'
+
+debug = False
+
+# From https://openweathermap.org/api
+weather_api_key = "xxxxxxxx"
+
+ua = "GidLabs-Where-u-at/0.1"
+
+# From https://openweathermap.org/find?q=portishead
+city_id = 2640037
+
+refresh = 3600

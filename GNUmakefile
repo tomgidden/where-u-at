@@ -1,6 +1,6 @@
-.PHONY: all life360_to_mqtt ical_to_mqtt run
+.PHONY: all life360_to_mqtt ical_to_mqtt weather_to_mqtt run
 
-run: stack.yml life360_to_mqtt ical_to_mqtt
+run: stack.yml life360_to_mqtt ical_to_mqtt weather_to_mqtt
 	docker stack deploy -c stack.yml where-u-at
 
 clean:
@@ -10,4 +10,7 @@ life360_to_mqtt:
 	$(MAKE) -C $@ build
 
 ical_to_mqtt:
+	$(MAKE) -C $@ build
+
+weather_to_mqtt:
 	$(MAKE) -C $@ build

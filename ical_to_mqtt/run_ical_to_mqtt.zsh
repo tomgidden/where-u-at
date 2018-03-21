@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# Not needed if Docker used instead
+
 mount /nfs/miniprojects 2>/dev/null
 
 #set -e

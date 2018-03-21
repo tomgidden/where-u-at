@@ -109,6 +109,7 @@ body {
   position: relative;
   margin: 20px 20px;
   border-top: 1px solid #ffddcc;
+  clear: both;
 }
 
 .events .day:first-child {
@@ -151,8 +152,8 @@ body {
 .events .event .time {
   overflow: visible;
   float: left;
-  clear: both;
   font-weight: bold;
+  clear: left;
 }
 
 .events .event .time.allday {
@@ -168,4 +169,61 @@ body {
   font-weight: 900;
   font-size: 90px;
   line-height: 1.2;
+}
+
+
+.weather {
+  float:right;
+}
+
+.forecast .temperature:after {
+  content: "°C"
+}
+
+.forecast {
+  margin: 0 10px;
+  display:inline-block;
+  text-align:center;
+}
+
+.forecast i {
+  font-size:0;
+}
+
+.forecast i:before {
+  font-size:24px;
+}
+
+.forecast .temperature {
+  display:block;
+  font-size:18px;
+}
+
+.forecast .at {
+  display:block;
+  font-size:18px;
+}
+
+.hideweather .event {
+  clear: none;
+}
+
+.event {
+  clear: right;
+}
+
+.hideweather .weather {
+  float:right;
+}
+
+.hideweather .forecast {
+  display:none;
+}
+
+.hideweather .forecast .at {
+  display:none;
+}
+
+.hideweather .forecast.noon {
+  display:block;
 }
