@@ -173,7 +173,8 @@ body {
 
 
 .weather {
-  float:right;
+  display:block;
+  text-align:center;
 }
 
 .forecast .temperature:after {
@@ -181,7 +182,7 @@ body {
 }
 
 .forecast {
-  margin: 0 10px;
+  margin: 0 8px;
   display:inline-block;
   text-align:center;
 }
@@ -191,17 +192,17 @@ body {
 }
 
 .forecast i:before {
-  font-size:24px;
+  font-size:22px;
 }
 
 .forecast .temperature {
   display:block;
-  font-size:18px;
+  font-size:16px;
 }
 
 .forecast .at {
   display:block;
-  font-size:18px;
+  font-size:14px;
 }
 
 .hideweather .event {
