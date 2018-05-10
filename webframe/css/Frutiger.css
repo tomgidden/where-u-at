@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-Roman.otf) format("opentype");
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-Italic.otf) format("opentype");
+  font-style: italic;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-Bold.otf) format("opentype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-BoldItalic.otf) format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-Cn.otf) format("opentype");
+  font-stretch: condensed;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-ItalicCn.otf) format("opentype");
+  font-style: italic;
+  font-stretch: condensed;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-BoldCn.otf) format("opentype");
+  font-weight: bold;
+  font-stretch: condensed;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-BoldItalic.otf) format("opentype");
+  font-weight: bold;
+  font-style: italic;
+  font-stretch: condensed;
+}
+
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-Black.otf) format("opentype");
+  font-weight: 900;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-BlackCn.otf) format("opentype");
+  font-stretch: condensed;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "FONT";
+  src: url(/fonts/FrutigerLTStd-BlackItalic.otf) format("opentype");
+  font-style: italic;
+  font-weight: 900;
+}

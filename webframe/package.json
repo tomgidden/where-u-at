@@ -1,0 +1,6 @@
+{
+  "name": "webframe",
+  "dependencies": {
+    "weather-icons": "github:erikflowers/weather-icons"
+  }
+}
