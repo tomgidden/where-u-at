@@ -3,6 +3,7 @@ var Calendar, Clock, People;
 var weather_data;
 var cal_data;
 var loc_data = [];
+var leds_data = [];
 
 function mqtt_message(topic, payload, details)
 {
@@ -21,6 +22,12 @@ function mqtt_message(topic, payload, details)
         calendar_render();
         weather_update(topic, payload, details);
         times_render();
+    }
+    else {
+        var g = topic.match('/sensor/(.+)/state');
+        if (g) {
+            leds_update(g[1], payload);
+        }
     }
 }
 
@@ -178,6 +185,49 @@ function calendar_resolve(payload)
     return events;
 }
 
+function leds_update(sensor, payload)
+{
+    if (typeof payload === 'string')
+        payload = JSON.parse(payload);
+
+    if (undefined !== leds_data[sensor] && 1===leds_data[sensor] && !payload) {
+        // Change to flash
+        leds_data[sensor] = 2;
+        setTimeout(function () { leds_update(sensor, false); }, 120*1000);
+    }
+    else {
+        leds_data[sensor] = payload ? 1 : 0;
+    }
+
+    leds_render();
+}
+
+function leds_render()
+{
+    leds_render_led('washingmachine');
+    leds_render_led('tumbledryer');
+}
+
+function leds_render_led(sensor)
+{
+    var obj = $('#led_'+sensor);
+    var cur = obj.data('state');
+    console.log("Sensor "+sensor+" "+cur+" -> "+leds_data[sensor]);
+
+    if (cur != leds_data[sensor]) {
+        if (1 === leds_data[sensor]) {
+            obj.show().removeClass('flash');
+        }
+        else if (0 === leds_data[sensor]) {
+            obj.hide().removeClass('flash');
+        }
+        else if (2 === leds_data[sensor]) {
+            obj.show().addClass('flash');
+        }
+        obj.data('state', leds_data[sensor]);
+    }
+}
+
 function weather_update(topic, payload, details)
 {
     payload = JSON.parse(payload);
@@ -195,6 +245,7 @@ function weather_render()
     if (!weather_data) return;
 
     var now = moment();
+    var primary_fc = [];          // Primary forecast for a day
 
     $('.weather').empty();
 
@@ -203,8 +254,9 @@ function weather_render()
         var fc = weather_data[i];
 
         var dt = moment(fc['dt_txt']);
+        var id = dt.format('YYYYMMDD');
 
-        var day_el = $('.day_'+dt.format('YYYYMMDD'));
+        var day_el = $('.day_'+id);
         if (day_el.length <= 0) continue;
 
         var weather_el = $('.weather', day_el);
@@ -217,14 +269,19 @@ function weather_render()
 
         if (dt < now) fc_el.addClass('past');
 
-        var tm = dt.format('H');
+        if (undefined===primary_fc[id] || 12===h)
+            primary_fc[id] = fc_el;
 
-        if (tm==='12') fc_el.addClass('noon');
+        fc_el.addClass('flagged');
 
         $('<span>').addClass('at').text(dt.format('ha')).appendTo(fc_el);
         $('<i>').addClass('wi wi-owm-'+fc['weather'][0]['id']).text(fc['weather'][0]['description']).appendTo(fc_el);
         $('<span>').addClass('temperature').text(Math.round(fc['main']['temp']-273.15)).appendTo(fc_el);
     }
+
+    for (var i in primary_fc)
+        if (primary_fc.hasOwnProperty(i))
+            primary_fc[i].addClass('primary');
 }
 
 function calendar_update(topic, payload, details)
@@ -458,6 +515,7 @@ $(function () {
     setInterval(weather_render, 60*30*1000);
     setInterval(calendar_render, 60*10*1000);
     setInterval(times_render, 10*1000);
+    setInterval(leds_render, 60*1000);
 
     var client = mqtt.connect('ws://mqtt.home:1884/');
 
@@ -465,5 +523,7 @@ $(function () {
         .on('message', mqtt_message)
         .subscribe('/calendar/all_events')
         .subscribe('/weather')
+        .subscribe('/sensor/washingmachine/state')
+        .subscribe('/sensor/tumbledryer/state')
         .subscribe('/location/+');
 });
