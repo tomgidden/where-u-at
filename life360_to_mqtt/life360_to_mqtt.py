@@ -50,59 +50,62 @@ def distance_between(lat, lon, hlat, hlon):
 
 def get_updates():
     api = life360(authorization_token=life360_authorization_token, username=life360_username, password=life360_password)
-    if api.authenticate():
-        circles =  api.get_circles()
-        for circle_info in circles:
-            id = circle_info['id']
-            circle = api.get_circle(id)
+    if not api.authenticate():
+        return {}
 
-            for m in circle['members']:
+    circles =  api.get_circles()
 
-                lat = float(m['location']['latitude'])
-                lon = float(m['location']['longitude'])
-                acc = float(m['location']['accuracy'])
+    for circle_info in circles:
+        id = circle_info['id']
+        circle = api.get_circle(id)
 
-                person = {
-                    'id': m['id'],
-                    'name': m['firstName'] + ' ' + m['lastName'],
-                    'nickname': m['firstName'],
-                    'latitude': lat,
-                    'longitude': lon,
-                    'accuracy': acc,
-                    'time': datetime.datetime.utcfromtimestamp(int(m['location']['timestamp'])).strftime('%Y-%m-%dT%H:%M:%SZ'),
-                    'since': datetime.datetime.utcfromtimestamp(int(m['location']['since'])).strftime('%Y-%m-%dT%H:%M:%SZ'),
-                    'address': None
-                }
+        for m in circle['members']:
+
+            lat = float(m['location']['latitude'])
+            lon = float(m['location']['longitude'])
+            acc = float(m['location']['accuracy'])
+
+            person = {
+                'id': m['id'],
+                'name': m['firstName'] + ' ' + m['lastName'],
+                'nickname': m['firstName'],
+                'latitude': lat,
+                'longitude': lon,
+                'accuracy': acc,
+                'time': datetime.datetime.utcfromtimestamp(int(m['location']['timestamp'])).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                'since': datetime.datetime.utcfromtimestamp(int(m['location']['since'])).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                'address': None
+            }
 
 
-                for lname, l in locations.items():
-                    d = distance_between(lat, lon, l['latitude'], l['longitude'])
-                    if d + acc < l['radius']:
-                        try:             person['address'] = l['address']
-                        except KeyError: person['address'] = lname
-                        break
+            for lname, l in locations.items():
+                d = distance_between(lat, lon, l['latitude'], l['longitude'])
+                if d + acc < l['radius']:
+                    try:             person['address'] = l['address']
+                    except KeyError: person['address'] = lname
+                    break
 
-                if not person['address']:
-                    try:
-                        if m['location']['address1']:
-                            person['address'] = m['location']['address1']
-                    except:
-                        pass
+            if not person['address']:
+                try:
+                    if m['location']['address1']:
+                        person['address'] = m['location']['address1']
+                except:
+                    pass
 
-                if not person['address']:
-                    try:
-                        location = geolocator.reverse("{}, {}".format(lat, lon))
-                        if isinstance(location, list):
-                            location = location[0]
-                        if location:
-                            addr = location.address
-                            person['raw_address'] = addr
-                            addr = re.sub(r'^\d+\s*([A-Z])', r'\1', addr)
-                            person['address'] = addr
-                    except Exception as err:
-                        print (err)
+            if not person['address']:
+                try:
+                    location = geolocator.reverse("{}, {}".format(lat, lon))
+                    if isinstance(location, list):
+                        location = location[0]
+                    if location:
+                        addr = location.address
+                        person['raw_address'] = addr
+                        addr = re.sub(r'^\d+\s*([A-Z])', r'\1', addr)
+                        person['address'] = addr
+                except Exception as err:
+                    print (err)
 
-                people[m['id']] = person
+            people[m['id']] = person
     return people
 
 location_topic = "/location"
