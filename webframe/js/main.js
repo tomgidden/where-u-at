@@ -73,17 +73,14 @@ function calendar_set_day(parent, date, events, title, cls)
         day_el = $('<div>').appendTo(parent);
     }
 
+    // Set title text if not explicit
+    if (!title)
+        title = date.format('dddd, D MMMM');
+
     // Reset classes on day element.  This will also unflag the day if it
     // was marked for deletion (good)
     day_el.prop('class', 'day day_'+id);
     if (cls) day_el.addClass(cls);
-
-    // Get/Create title element
-    if ( ! (title_el = $('.title', day_el)).length ) {
-        title_el = $('<heading>')
-            .addClass('title')
-            .appendTo(day_el);
-    }
 
     // Get/Create weather element
     if ( ! (weather_el = $('.weather', day_el)).length ) {
@@ -91,12 +88,6 @@ function calendar_set_day(parent, date, events, title, cls)
             .addClass('weather')
             .appendTo(day_el);
     }
-
-    // Set title text, regardless
-    if (title)
-        title_el.text(title);
-    else
-        title_el.text(date.format('dddd, D MMMM'));
 
     // Clear all events.  Easier this way.
     $('.event', day_el).remove();
@@ -150,14 +141,19 @@ function calendar_set_day(parent, date, events, title, cls)
 
         day_el.addClass('noevents');
     }
+
+    // Get/Create title element
+    $('heading', day_el).remove();
+    title_el = $('<heading>')
+        .addClass('title')
+        .text(title)
+        .prependTo(day_el);
 }
 
 function calendar_resolve(payload)
 {
     var events = [];
-
-    var now_doy = moment().dayOfYear();
-    var now_year = moment().year();
+    var now = moment();
 
     for (var i in payload) {
         if (!payload.hasOwnProperty(i)) continue;
@@ -166,19 +162,18 @@ function calendar_resolve(payload)
 
         // event.begin = event.begin.replace(/([\-\+]\d\d):01$/, '$1:00');
         event.begin = moment(event.begin);
+
+        if (event.begin.isBefore(now, 'day')) continue;
+
         event.end = moment(event.end);
 
-        var days = event.begin.dayOfYear() - now_doy;
-        var year = event.begin.year();
+        var ymd = event.begin.format('YYYYMMDD')
+        event.ymd = ymd;
 
-        if (year > now_year) {
-            days.add(year-now_year, 'years');
-        }
-
-        if (undefined === events[days]) {
-            events[days] = [ event ];
+        if (undefined === events[ymd]) {
+            events[ymd] = [ event ];
         } else {
-            events[days].push(event);
+            events[ymd].push(event);
         }
     }
 
@@ -309,43 +304,44 @@ function calendar_render()
     // still relevant.
     $('.day', parent).addClass('flagged');
 
+    var t = moment();
+    var ymd = t.format('YYYYMMDD');
+
     // Add today, tomorrow and the following three days, regardless of
     // events, so weather can be displayed.
     calendar_set_day(parent,
-                     moment(),
-                     undefined !== days[0] ? days[0] : null,
+                     t,
+                     undefined !== days[ymd] ? days[ymd] : null,
                      moment().format('dddd, D MMMM YYYY'),
                      'today');
 
+    ymd = t.add(1, 'days').format('YYYYMMDD');
+
     calendar_set_day(parent,
-                     moment().add(1, 'days'),
-                     undefined !== days[1] ? days[1] : null,
+                     t,
+                     undefined !== days[ymd] ? days[ymd] : null,
                      'Tomorrow',
                      'tomorrow');
 
-    calendar_set_day(parent,
-                     moment().add(2, 'days'),
-                     undefined !== days[2] ? days[2] : null);
+    ymd = t.add(1, 'days').format('YYYYMMDD');
 
-    calendar_set_day(parent,
-                     moment().add(3, 'days'),
-                     undefined !== days[3] ? days[3] : null);
+    for (var x=2; x<7; x++) {
 
-    calendar_set_day(parent,
-                     moment().add(4, 'days'),
-                     undefined !== days[4] ? days[4] : null);
+        calendar_set_day(parent,
+                         t,
+                         undefined !== days[ymd] ? days[ymd] : null);
+
+        ymd = t.add(1, 'days').format('YYYYMMDD');
+    }
 
     // And add any extra days with events
     for (var d in days) {
         if (!days.hasOwnProperty(d)) continue;
-        if (d < 5) continue;
 
-        var events = days[d];
+        var t2 = moment(d);
+        if (t2.isBefore(t)) continue;
 
-        calendar_set_day(parent,
-                         events[0].begin,
-                         events,
-                         events[0].begin.format('dddd, D MMMM'));
+        calendar_set_day(parent, t2, days[d], null);
     }
 
     // Remove any days that remain flagged

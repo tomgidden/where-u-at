@@ -178,7 +178,14 @@ body {
   margin-left: 3em;
 }
 
+.events .event.holiday .time.allday {
+  display: none;
+}
+
 .events .event.holiday .description {
+  margin-left: 0;
+  text-align:center;
+  font-weight:bold;
 }
 
 
@@ -211,7 +218,7 @@ body {
 }
 
 .forecast .temperature:after {
-  content: "°C"
+  content: "\0000b0C"
 }
 
 .forecast {
