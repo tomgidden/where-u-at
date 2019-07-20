@@ -24,5 +24,8 @@ services:
     image: nginx
     volumes:
       - "./webframe:/usr/share/nginx/html:ro"
+      - "./ssl:/etc/ssl:ro"
+      - "./ssl/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro"
     ports:
       - "26905:80"
+      - "26906:443"
